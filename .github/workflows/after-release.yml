@@ -12,13 +12,13 @@ on:
         description: Version
         required: true
         type: string
-  workflow_run:
-    workflows: ["Release"]
+  release:
     types:
-      completed
+      published
 env:
-  NEW_BRANCH: users/readme-bot/update-readme-to-${{ github.event.inputs.version }}
-  
+  AZUREAUTH_VERSION: ${{ github.event.inputs.version }}
+  NEW_BRANCH: users/readme-bot/update-readme-to-${{ AZUREAUTH_VERSION }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   update-readme:
@@ -38,21 +38,21 @@ jobs:
       with:
         python-version: '3.10'
     - name: Validate version
-      run: echo ${{ github.event.inputs.version }} | python ./bin/version.py
+      run: echo ${{ AZUREAUTH_VERSION }} | python ./bin/version.py
     - name: Create new branch
       run: git checkout -B ${{ env.NEW_BRANCH }}
     - name: Replace versions in Readme.md
       run: |
-        echo ${{ github.event.inputs.version }} | python ./bin/readme_bot.py
+        echo ${{ AZUREAUTH_VERSION }} | python ./bin/readme_bot.py
         git config user.name "Readme bot"
         git config user.email "readme_bot"
-        git commit -a -m "Update versions in README.md to ${{ github.event.inputs.version }}"
+        git commit -a -m "Update versions in README.md to ${{ AZUREAUTH_VERSION }}"
         git push -u origin ${{ env.NEW_BRANCH }} --force 
     - name: Create Pull Request
       env:
         GH_PR_COMMAND: gh pr create --base main 
           --head ${{ env.NEW_BRANCH }}
-          --title "Update Readme.md for version ${{ github.event.inputs.version }}" 
+          --title "Update Readme.md for version ${{ AZUREAUTH_VERSION }}" 
           --body "This PR is automatic generated." 
           --label "documentation"
       run: |
