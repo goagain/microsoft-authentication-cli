@@ -21,7 +21,7 @@ jobs:
   update-readme:
     permissions:
       pull-requests: write
-      repository-projects: read|write
+      repository-projects: write
       
     runs-on: ubuntu-latest
     steps:
