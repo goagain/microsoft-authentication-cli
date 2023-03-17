@@ -23,7 +23,7 @@ jobs:
   update-readme:
     env:
       GH_TOKEN: ${{ github.token }}
-      NEW_BRANCH: users/readme-bot/update-readme-to-${{ env.AZUREAUTH_VERSION }}
+      NEW_BRANCH: users/readme-bot/update-readme-to-${{ AZUREAUTH_VERSION }}
     permissions:
       pull-requests: write
       repository-projects: write
