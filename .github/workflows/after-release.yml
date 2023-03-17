@@ -12,7 +12,6 @@ on:
         description: 'Version'
         required: true
         type: string
-        
 env:
   NEW_BRANCH: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
   
@@ -22,7 +21,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_PR_COMMAND: gh pr create --base main 
-          --head ${{ env.NEW_BRANCH }}
+          --head "${{ env.NEW_BRANCH }}"
           --title "Update Readme.md for version ${{ github.event.inputs.version }}" 
           --body "This PR is automatic generated." 
           --label "documentation"
