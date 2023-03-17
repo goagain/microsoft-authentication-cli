@@ -34,6 +34,8 @@ jobs:
     - name: Replace versions in Readme.md
       run: |
         echo ${{ github.event.inputs.version }} | python ./bin/readme_bot.py
+        git config user.name "Readme bot"
+        git config user.email "readme_bot"
         git commit -m "Update versions in README.md to ${{ github.event.inputs.version }}"
         git push -u origin/$NEW_BRANCH
     - name: Create Pull Request
