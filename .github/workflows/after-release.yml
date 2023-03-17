@@ -37,7 +37,7 @@ jobs:
         git config user.name "Readme bot"
         git config user.email "readme_bot"
         git commit -a -m "Update versions in README.md to ${{ github.event.inputs.version }}"
-        git push -u origin/$NEW_BRANCH
+        git push -u origin $NEW_BRANCH
     - name: Create Pull Request
       uses: repo-sync/pull-request@v2
       with:
