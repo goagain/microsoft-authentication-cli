@@ -52,8 +52,7 @@ jobs:
         git push -u origin $NEW_BRANCH --force
     - name: Create Pull Request
       run: |
-        if ! output=$(bash -c "$GH_PR_COMMAND"); then
+        if ! {output=$(bash -c "$GH_PR_COMMAND" 2>$1)}; then
           echo "::warning:: $output"
-          echo "::warning:: The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally"
-          echo "::warning:: $GH_PR_COMMAND"
+          echo "::warning:: The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally \n $GH_PR_COMMAND"
         fi
