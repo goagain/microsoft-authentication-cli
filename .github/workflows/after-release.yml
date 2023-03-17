@@ -15,16 +15,22 @@ on:
         
 env:
   NEW_BRANCH: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
-  GH_TOKEN: ${{ github.token }}
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   update-readme:
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_PR_COMMAND: gh pr create --base main \
+        --head $NEW_BRANCH \
+        --title "Update Readme.md for version ${{ github.event.inputs.version }}" \
+        --body "This PR is automatic generated." \
+        --label "documentation"
+
     permissions:
       pull-requests: write
       repository-projects: write
       contents: write
-      
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -45,9 +51,12 @@ jobs:
         git commit -a -m "Update versions in README.md to ${{ github.event.inputs.version }}"
         git push -u origin $NEW_BRANCH --force
     - name: Create Pull Request
+      continue-on-error: true
       run: |
-        gh pr create --base main \
-        --head $NEW_BRANCH \
-        --title "Update Readme.md for version ${{ github.event.inputs.version }}" \
-        --body "This PR is automatic generated." \
-        --label "documentation"
+        $GH_PR_COMMAND
+    - name: Echo command
+      if: failed()
+      run: |
+        echo "The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions"
+        echo "Run the following command locally"
+        echo "$GH_PR_COMMAND"
