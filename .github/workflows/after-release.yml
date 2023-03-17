@@ -17,14 +17,13 @@ on:
       published
 env:
   AZUREAUTH_VERSION: ${{ github.event.inputs.version }}
-  NEW_BRANCH: users/readme-bot/update-readme-to-${{ AZUREAUTH_VERSION }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   update-readme:
     env:
       GH_TOKEN: ${{ github.token }}
-
+      NEW_BRANCH: users/readme-bot/update-readme-to-${{ env.AZUREAUTH_VERSION }}
     permissions:
       pull-requests: write
       repository-projects: write
