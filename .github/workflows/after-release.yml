@@ -54,5 +54,6 @@ jobs:
       run: |
         if ! ERR=$((bash -c "$GH_PR_COMMAND") 2>&1); then
           echo "::warning:: $ERR"
-          echo "::warning:: The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally: $GH_PR_COMMAND"
+          echo "::warning:: The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally."
+          echo "::warning::$GH_PR_COMMAND"
         fi
