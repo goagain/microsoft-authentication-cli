@@ -39,9 +39,7 @@ jobs:
     - name: Create Pull Request
       uses: repo-sync/pull-request@v2
       with:
-        source_branch: $NEW_BRANCH
-        with:
-          source_bach: $NEW_BRANCH
-          destination_branch: main
-          pr_label: "auto-pr,documentation,devops"
-          pr_title: "Update Readme.md for version ${{ github.event.inputs.version }}"
+        source_bach: $NEW_BRANCH
+        destination_branch: main
+        pr_label: "auto-pr,documentation,devops"
+        pr_title: "Update Readme.md for version ${{ github.event.inputs.version }}"
