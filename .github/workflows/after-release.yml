@@ -12,18 +12,17 @@ on:
         description: Version
         required: true
         type: string
-      branch:
-        description: The branch for pull request
-        required: false
-        type: string
-        default: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
+
+env:
+  NEW_BRANCH: users/readme-bot/update-readme-to-${{ github.event.inputs.version }}
+  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   update-readme:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_PR_COMMAND: gh pr create --base main 
-          --head ${{ github.event.inputs.branch }}
+          --head ${{ env.NEW_BRANCH }}
           --title "Update Readme.md for version ${{ github.event.inputs.version }}" 
           --body "This PR is automatic generated." 
           --label "documentation"
@@ -43,7 +42,7 @@ jobs:
     - name: Validate version
       run: echo ${{ github.event.inputs.version }} | python ./bin/version.py
     - name: Create new branch
-      run: git checkout -B ${{ github.event.inputs.branch }}
+      run: git checkout -B ${{ env.NEW_BRANCH }}
     - name: Replace versions in Readme.md
       run: |
         echo ${{ github.event.inputs.version }} | python ./bin/readme_bot.py
