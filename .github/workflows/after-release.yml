@@ -1,0 +1,46 @@
+# This is a basic workflow that is manually triggered
+
+name: After Release
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      semi_verversionsion:
+        description: 'Version'
+        required: true
+        type: string
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  env:
+    NEW_BRANCH: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Validate version
+      run: echo ${{ github.event.inputs.version }} | python ./bin/version.py
+    - name: Create new branch
+      run: git checkout -b $NEW_BRANCH
+    - name: Replace versions in Readme.md
+      run: |
+        echo ${{ github.event.inputs.version }} | python ./bin/readme_bot.py
+        git commit -m "Update versions in README.md to ${{ github.event.inputs.version }}"
+        git push -u origin/$NEW_BRANCH
+    - name: Create Pull Request
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: $NEW_BRANCH
+        with:
+          source_bach: $NEW_BRANCH
+          destination_branch: main
+          pr_label: "auto-pr,documentation,devops"
+          pr_title: "Update Readme.md for version ${{ github.event.inputs.version }}"
