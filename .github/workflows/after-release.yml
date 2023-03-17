@@ -50,4 +50,4 @@ jobs:
         --head $NEW_BRANCH \
         --title "Update Readme.md for version ${{ github.event.inputs.version }}" \
         --body "This PR is automatic generated." \
-        --label "auto-pr,documentation,devops"
+        --label "documentation"
