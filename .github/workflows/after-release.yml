@@ -36,8 +36,8 @@ jobs:
     - name: if_release
       if: github.event.release
       run: |
-        echo "AZUREAUTH_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
-        echo "NEW_BRANCH=users/readme-bot/update-readme-to-${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+        echo "AZUREAUTH_VERSION=${{ github.event.workflow_run.event.inputs.version }}" >> $GITHUB_ENV
+        echo "NEW_BRANCH=users/readme-bot/update-readme-to-${{ github.event.workflow_run.event.inputs.version }}" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v3
