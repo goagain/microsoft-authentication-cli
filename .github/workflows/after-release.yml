@@ -12,7 +12,7 @@ on:
         description: Version
         required: true
         type: string
-  workflow_run:
+  deployment:
     workflows: Release
     types:
       - completed
@@ -20,7 +20,7 @@ on:
 jobs:
   update-readme:
     env:
-      GH_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.PAT }}
       NEW_BRANCH: users/readme-bot/update-readme-to-$AZUREAUTH_VERSION
     permissions:
       pull-requests: write
