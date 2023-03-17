@@ -12,11 +12,12 @@ on:
         description: 'Version'
         required: true
         type: string
+        
+env:
+  NEW_BRANCH: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  env:
-    NEW_BRANCH: readme-bot/upgrade-readme-to-${{ github.event.inputs.version }}
   update-readme:
     runs-on: ubuntu-latest
     steps:
