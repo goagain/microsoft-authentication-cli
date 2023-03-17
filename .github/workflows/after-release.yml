@@ -51,12 +51,9 @@ jobs:
         git commit -a -m "Update versions in README.md to ${{ github.event.inputs.version }}"
         git push -u origin $NEW_BRANCH --force
     - name: Create Pull Request
-      continue-on-error: true
       run: |
-        bash -c "$GH_PR_COMMAND"
-    - name: Echo command
-      if: ${{ always() }}
-      run: |
-        echo "The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions"
-        echo "Run the following command locally"
-        echo "$GH_PR_COMMAND"
+        if ! bash -c "$GH_PR_COMMAND"; then
+          >&2 echo "The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions \
+          Run the following command locally \
+          $GH_PR_COMMAND"
+        fi
