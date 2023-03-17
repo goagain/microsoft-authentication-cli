@@ -53,11 +53,11 @@ jobs:
           --body "This PR is automatic generated." 
           --label "documentation"
       run: |
+        echo "## Result of creating PR" >> $GITHUB_STEP_SUMMARY
         if ! ERR=$(bash -c "$GH_PR_COMMAND" 2>&1); then
-          echo "## Result of creating PR" >> $GITHUB_STEP_SUMMARY
-          echo  "Failed. Reason: $ERR" >> $GITHUB_STEP_SUMMARY
-          echo The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally: >> $GITHUB_STEP_SUMMARY
+          echo  "Failed. Reason: \`$ERR\`" >> $GITHUB_STEP_SUMMARY
+          echo 'The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions. Run the following command locally:' >> $GITHUB_STEP_SUMMARY
           echo '```'  >> $GITHUB_STEP_SUMMARY
-          echo GH_PR_COMMAND >> $GITHUB_STEP_SUMMARY
+          echo $GH_PR_COMMAND >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
         fi
