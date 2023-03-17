@@ -55,7 +55,7 @@ jobs:
       run: |
         bash -c $GH_PR_COMMAND
     - name: Echo command
-      if: ${{ failure() }}
+      if: ${{ always() }}
       run: |
         echo "The creation of Pull Request failed. Your project or organization may not allow to create PR in Actions"
         echo "Run the following command locally"
