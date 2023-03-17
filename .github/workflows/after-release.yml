@@ -21,11 +21,6 @@ jobs:
   update-readme:
     env:
       GH_TOKEN: ${{ github.token }}
-      GH_PR_COMMAND: gh pr create --base main 
-          --head ${{ env.NEW_BRANCH }}
-          --title "Update Readme.md for version ${{ github.event.inputs.version }}" 
-          --body "This PR is automatic generated." 
-          --label "documentation"
 
     permissions:
       pull-requests: write
@@ -51,6 +46,12 @@ jobs:
         git commit -a -m "Update versions in README.md to ${{ github.event.inputs.version }}"
         git push -u origin ${{ github.event.inputs.branch }} --force
     - name: Create Pull Request
+      env:
+        GH_PR_COMMAND: gh pr create --base main 
+          --head ${{ env.NEW_BRANCH }}
+          --title "Update Readme.md for version ${{ github.event.inputs.version }}" 
+          --body "This PR is automatic generated." 
+          --label "documentation"
       run: |
         if ! ERR=$(bash -c "$GH_PR_COMMAND" 2>&1); then
           echo ::warning:: $ERR
