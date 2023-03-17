@@ -42,7 +42,7 @@ jobs:
     - name: Validate version
       run: echo ${{ github.event.inputs.version }} | python ./bin/version.py
     - name: Create new branch
-      run: git checkout -b $NEW_BRANCH
+      run: git checkout -B $NEW_BRANCH
     - name: Replace versions in Readme.md
       run: |
         echo ${{ github.event.inputs.version }} | python ./bin/readme_bot.py
