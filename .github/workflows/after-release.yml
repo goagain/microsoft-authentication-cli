@@ -12,7 +12,10 @@ on:
         description: Version
         required: true
         type: string
-
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      completed
 env:
   NEW_BRANCH: users/readme-bot/update-readme-to-${{ github.event.inputs.version }}
   
