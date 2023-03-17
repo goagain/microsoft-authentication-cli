@@ -34,7 +34,7 @@ jobs:
         echo "AZUREAUTH_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
         echo "NEW_BRANCH=users/readme-bot/update-readme-to-${{ github.event.inputs.version }}" >> $GITHUB_ENV
     - name: if_release
-      if: github.event.release
+      if: github.event.workflow_run
       run: |
         echo "AZUREAUTH_VERSION=${{ github.event.workflow_run.event.inputs.version }}" >> $GITHUB_ENV
         echo "NEW_BRANCH=users/readme-bot/update-readme-to-${{ github.event.workflow_run.event.inputs.version }}" >> $GITHUB_ENV
