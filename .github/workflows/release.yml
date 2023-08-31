@@ -63,6 +63,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         path: azureauth-${{ github.event.inputs.version }}-linux-x64.deb
+        name: azureauth-${{ github.event.inputs.version }}-linux-x64.deb
 
     - name: Rename linux-arm64 artifact
       run: |
@@ -72,6 +73,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         path: azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
+        name: azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
         
   release:
     runs-on: ubuntu-latest
