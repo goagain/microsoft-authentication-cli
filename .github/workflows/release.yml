@@ -59,21 +59,18 @@ jobs:
       run: |
         mv ${{ env.ADO_LINUX_ARTIFACT_DOWNLOAD_PATH }}/${{ env.ADO_LINUX_ARTIFACT_NAME }}/azureauth_${{ github.event.inputs.version }}-${{ env.DEBIAN_REVISION }}_amd64.deb \
         azureauth-${{ github.event.inputs.version }}-linux-x64.deb
-    - name: Upload linux-x64 artifact
-      uses: actions/upload-artifact@v3
-      with:
-        path: azureauth-${{ github.event.inputs.version }}-linux-x64.deb
-        name: azureauth-${{ github.event.inputs.version }}-linux-x64.deb
-
     - name: Rename linux-arm64 artifact
       run: |
         mv ${{ env.ADO_LINUX_ARTIFACT_DOWNLOAD_PATH }}/${{ env.ADO_LINUX_ARTIFACT_NAME }}/azureauth_${{ github.event.inputs.version }}-${{ env.DEBIAN_REVISION }}_arm64.deb \
         azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
-    - name: Upload linux-arm64 artifact
+
+    - name: Upload linux artifact
       uses: actions/upload-artifact@v3
       with:
-        path: azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
-        name: azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
+        name: azureauth-linux
+        path: |
+          azureauth-${{ github.event.inputs.version }}-linux-x64.deb
+          azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
         
   release:
     runs-on: ubuntu-latest
@@ -88,11 +85,7 @@ jobs:
     - name: Download linux-x64 artifact
       uses: actions/download-artifact@v3
       with:
-        name: azureauth-${{ github.event.inputs.version }}-linux-x64.deb
-    - name: Download linux-arm64 artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
+        name: azureauth-linux
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
