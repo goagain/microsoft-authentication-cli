@@ -126,32 +126,15 @@ def main() -> None:
         ado_pat = os.environ["AZURE_DEVOPS_BUILD_PAT"]
         organization = os.environ["ADO_ORGANIZATION"]
         project = os.environ["ADO_PROJECT"]
-        pipeline_id = os.environ["ADO_AZUREAUTH_LINUX_PIPELINE_ID"]
-        stage_id = os.environ["ADO_AZUREAUTH_LINUX_STAGE_ID"]
-        version = os.environ["VERSION"]
-        debian_revision = os.environ["DEBIAN_REVISION"]
-        commit_hash = os.environ["GITHUB_SHA"]
         ado_artifact_name = os.environ["ADO_LINUX_ARTIFACT_NAME"]
         artifact_download_path = os.environ["ADO_LINUX_ARTIFACT_DOWNLOAD_PATH"]
-
+        run_id = os.environ["ADO_BUILD_ID"]
     except KeyError as exc:
         # See https://stackoverflow.com/a/24999035/3288364.
         name = str(exc).replace("'", "")
         sys.exit(f"Error: missing env var: {name}")
 
     ado_client = ado_connection(organization, ado_pat).clients_v6_0
-
-    # 2. Trigger azure pipeline and wait for it to be finished.
-    run_id = trigger_azure_pipeline_and_wait_until_its_completed(
-        ado_client,
-        organization,
-        project,
-        pipeline_id,
-        stage_id,
-        version,
-        debian_revision,
-        commit_hash,
-    )
 
     # 3. Download the artifact
     download_artifact(

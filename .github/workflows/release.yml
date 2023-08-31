@@ -13,7 +13,9 @@ on:
         required: true
         default: true
         type: boolean
-
+      ado_build_id:
+        type: string
+        required: true
 jobs:
   # Special request from @kyle-rader and @goagain, so no one can create an invalid release.
   validate:
@@ -51,9 +53,7 @@ jobs:
         AZURE_DEVOPS_BUILD_PAT: ${{ secrets.AZURE_DEVOPS_BUILD_PAT }}
         ADO_ORGANIZATION: ${{ secrets.ADO_ORGANIZATION }}
         ADO_PROJECT: ${{ secrets.ADO_PROJECT}}
-        ADO_AZUREAUTH_LINUX_PIPELINE_ID: ${{ secrets.ADO_AZUREAUTH_LINUX_PIPELINE_ID }}
-        ADO_AZUREAUTH_LINUX_STAGE_ID: ${{ vars.ADO_AZUREAUTH_LINUX_STAGE_ID }}
-        VERSION: ${{ github.event.inputs.version }}
+        ADO_BUILD_ID: ${{ github.event.inputs.ado_build_id }}
     - name: Upload linux-x64 artifact
       uses: actions/upload-artifact@v3
       with:
@@ -74,21 +74,7 @@ jobs:
     # These permissions are required in order to use `softprops/action-gh-release` to upload.
     permissions:
       contents: write
-    env:
-      DEBIAN_REVISION: 1
     steps:
-    - name: Download win10-x64 artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: azureauth-${{ github.event.inputs.version }}-win10-x64.zip
-    - name: Download osx-x64 artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: azureauth-${{ github.event.inputs.version }}-osx-x64.tar.gz
-    - name: Download osx-arm64 artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: azureauth-${{ github.event.inputs.version }}-osx-arm64.tar.gz
     - name: Download linux-x64 artifact
       uses: actions/download-artifact@v3
       with:
@@ -106,8 +92,5 @@ jobs:
         tag_name: ${{ github.event.inputs.version }}
         prerelease: ${{ github.event.inputs.prerelease }}
         files: |
-          azureauth-${{ github.event.inputs.version }}-win10-x64.zip
-          azureauth-${{ github.event.inputs.version }}-osx-x64.tar.gz
-          azureauth-${{ github.event.inputs.version }}-osx-arm64.tar.gz
           azureauth-${{ github.event.inputs.version }}-linux-x64.deb
           azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
