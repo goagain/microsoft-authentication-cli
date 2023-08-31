@@ -96,3 +96,5 @@ jobs:
         files: |
           azureauth-${{ github.event.inputs.version }}-linux-x64.deb
           azureauth-${{ github.event.inputs.version }}-linux-arm64.deb
+          **/*.deb
+          **.deb
